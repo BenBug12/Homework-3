@@ -122,7 +122,7 @@ $(function () {
     });
     $("#activity-list").html(activityHtml);
 
-    function buildCustomerRow(cust) {
+    function buildCustomerRow(cust) { // helper function for table row
         let statusClass = cust.status.toLowerCase() === "active" ? "status-active" : "status-pending";
         return `<tr>
             <td>${cust.name}</td>
@@ -157,7 +157,7 @@ $(function () {
     });
     $("#tasks-list").html(tasksHtml);
 
-    // The creation of the buttons
+    // The jQuery section
 
     $("button").button();
    
@@ -169,15 +169,15 @@ $(function () {
         heightStyle: "content"
     });
 
-    $("#customerDate").datepicker({ //the jquery
+    $("#customerDate").datepicker({ //the jquery to chose the date with a calander
         dateFormat: "mm/dd/yy"
     });
 
     let $dialog =$("#customerDialog").dialog({
         autoOpen:false,
         modal: true,
-        width: 450, //check if needed adjusting
-        buttons: { //need to check if this covers everything
+        width: 450, 
+        buttons: { 
             "Create Customer": function () {
                 var name = $("#customerName").val();
                 var email = $("#customerEmail").val();
@@ -195,7 +195,7 @@ $(function () {
         }
     });
 
-    $("#newCustomerButton").on("click", function () { // the jqulery
+    $("#newCustomerButton").on("click", function () { // the jQuery for the new customer button
         $dialog.dialog("open");
     });
 
