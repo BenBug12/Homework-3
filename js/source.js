@@ -94,14 +94,109 @@ $(function () {
         },
     ]
 
-
     // *********************************************************************
     // Do not modify the JS objects above. You will write your code below.
     // *********************************************************************
 
+    $("#username").text(username);
+    $(".revenue-amt").text(revenueAmt);
+    $("#customer-num").text(customerNum);
+    $("#orders-amt").text(ordersAmt);
+    $("#issues-amt").text(issuesAmt);
+    $("#notification-num").text(notifAmt);
 
-
-       
-
-
+    let salesRowsHtml = "";
+    $.each(sales, function (index, item){
+        salesRowsHtml += `<tr>
+            <td>${item.product}</td>
+            <td>${item.quantity}</td>
+            <td>${item.revenue}</td>
+        </tr>`;
     });
+
+    $("<tbody>").html(salesRowsHtml).appendTo("#salesTable");
+
+    let activityHtml = "";
+    $.each(activities, function (index, item){
+        activityHtml += `<li>${item.message}</li>`;
+    });
+    $("#activity-list").html(activityHtml);
+
+    function buildCustomerRow(cust) {
+        let statusClass = cust.status.toLowerCase() === "active" ? "status-active" : "status-pending";
+        return `<tr>
+            <td>${cust.name}</td>
+            <td>${cust.email}</td>
+            <td><span class="status ${statusClass}">${cust.status}</span></td>
+            <td>${cust.joined}</td>
+        </tr>`;
+    }
+
+    let customerRowsHtml = "";
+    $.each(customers, function (index, cust) {
+        customerRowsHtml += buildCustomerRow(cust);
+    });
+    $("#customerTableBody").html(customerRowsHtml);
+
+    // The following statusHtml, notificationHtml, and tasksHtml all are part of the accordion
+    let statusHtml = "";
+    $.each(messages, function (index, item) {
+        statusHtml += `<li>${item.messsage}</li>`;
+    });
+    $("#system-status-list").html(statusHtml);
+
+    let notificationHtml = "";
+    $.each(notifications, function (index, item) {
+        notificationHtml += `<li>${item.messsage}</li>`;
+    });
+    $("#notifications-list").html(notificationHtml);
+   
+    let tasksHtml = "";
+    $.each(tasks, function (index, item) {
+        tasksHtml += `<li>${item.messsage}</li>`;
+    });
+    $("#tasks-list").html(tasksHtml);
+
+    // The creation of the buttons
+
+    $("button").button();
+   
+    $("#dashboardTabs").tabs();
+   
+
+    $("#accordion").accordion({  //The jquery for the accordion for statusHtml, notificaitonHtml, and tasksHtml
+        collapsible: true,
+        heightStyle: "content"
+    });
+
+    $("#customerDate").datepicker({ //the jquery
+        dateFormat: "mm/dd/yy"
+    });
+
+    let $dialog =$("#customerDialog").dialog({
+        autoOpen:false,
+        modal: true,
+        width: 450, //check if needed adjusting
+        buttons: { //need to check if this covers everything
+            "Create Customer": function () {
+                var name = $("#customerName").val();
+                var email = $("#customerEmail").val();
+
+                if (!name || !email) {
+                        alert("Please enter a name and email.");
+                        return;
+                }
+                alert("Customer created: " + name);
+                $(this).dialog("close");
+                },
+            "Cancel": function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    $("#newCustomerButton").on("click", function () { // the jqulery
+        $dialog.dialog("open");
+    });
+
+});
